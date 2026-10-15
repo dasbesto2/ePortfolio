@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reflection — e-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="../../index.html">Damiano Tartarini — e-Portfolio</a>
+    <nav aria-label="Primary">
+      <ul class="toplinks">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../index.html#modules">Modules</a></li>
+        <li><a href="../../about.html">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<p class="crumb"><a href="../../index.html">Home</a> / <a href="index.html">Machine Learning</a> / Reflection</p>
+
+<div class="layout">
+  <nav class="module-nav" aria-label="Module navigation">
+<h2>Module</h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<h2>Units</h2>
+<ul>
+<li><a href="unit-01.html">Unit 1 — Introduction to ML</a></li>
+<li><a href="unit-02.html">Unit 2 — Exploratory Data Analysis</a></li>
+<li><a href="unit-03.html">Unit 3 — Correlation & Regression</a></li>
+<li><a href="unit-04.html">Unit 4 — Linear Regression with Scikit-Learn</a></li>
+<li><a href="unit-05.html">Unit 5 — Clustering</a></li>
+<li><a href="unit-06.html">Unit 6 — Clustering with Python</a></li>
+<li><a href="unit-07.html">Unit 7 — Artificial Neural Networks</a></li>
+<li><a href="unit-08.html">Unit 8 — Training an ANN</a></li>
+<li><a href="unit-09.html">Unit 9 — Convolutional Neural Networks</a></li>
+<li><a href="unit-10.html">Unit 10 — Natural Language Processing</a></li>
+<li><a href="unit-11.html">Unit 11 — Model Selection & Evaluation</a></li>
+</ul>
+<h2>Synthesis</h2>
+<ul>
+<li><a href="team-project.html">Team Project</a></li>
+<li><a href="reflection.html" class="current">Reflection</a></li>
+<li><a href="professional-development.html">Professional Development</a></li>
+</ul>
+  </nav>
+  <main class="main">
+
+<h1>Reflection</h1>
+<div class="tags"><span class="tag">LO1 Ethics &amp; professionalism</span><span class="tag">LO2 Dataset applicability</span><span class="tag">LO3 Applying ML techniques</span><span class="tag">LO4 Team &amp; professional practice</span></div>
+
+<p>
+WHAT
+</p>
+<p>
+My progression across this module spanned twelve weekly units, and looking back they split roughly into three phases. The first part  was about foundations and limits: we opened with the Boeing 737 MAX and the MCAS disaster, which made it clear that this module cared as much about human-in-the-loop ethics as it did about code. Unit 2 had me building dendrograms alongside heatmaps. Unit 3 focused on correlation and regression and it gave me the chance to go through these statistics topics that would be later useful for the bigger group project.
+The central part of the module with units focusing on clustering, neural nets, and starting to ask what a model is actually doing, is where things picked up. Running k-means across Iris, Wine and Weather in Unit 6 showed me the elbow method and the silhouette score don’t always agree, which was more useful to see than to read about (Herdiana et al., 2026). At the same time I joined Team F (me, Jeroen, Adaeze and Sarah) for a group project on NYC Airbnb listings where I contributed both with the regression analysis learnt in Unit 3 and with the idea of using the mean distance of each listing from a specific point as continuous variable for correlation in our analysis. Unit 8 had me playing with gradient descent learning rates and then running SHAP (Moreira Cunha et al., 2024) on a MovieLens recommender, where I found baseline item and user biases accounted for 74% of the predictions: the model was barely learning anyone’s actual taste.
+The last third of the module moved into vision, language, and tying it together. Unit 9 paired a CIFAR-10 CNN with Matthew Wall’s reporting on facial recognition bias in policing. Unit 10 had us picking apart large language models as “stochastic parrots” (Hutson, 2021) prone to automation bias. Unit 11 was about parameter sensitivity and it also contained the bigger project assigned to students in this module, which was about training and comparing two models for a chosen task. I decided to go for a computer vision task and compared a ResNet50 CNN against a Random Forest on 10,583 dermatoscopic images, audited with Grad-CAM and LIME.
+</p>
+<p>SO WHAT</p>
+<p>
+If there’s one thread through all twelve weeks, it’s that the moments I doubted myself taught me more than the moments I didn’t. This was especially true during the development of the project in Unit 11, which I found tough. For example, when I saw that ResNet50 scored a high ROC AUC (0.978) and precision (0.976), clearly ahead of the Random Forest’s 0.890 I was prompted to think that the CNN was proving to be better. But once I compared the predictions with Grad-CAM and LIME, the numbers stopped being reassuring. Both models missed roughly one in seven malignant lesions and recall dropped to around 0.79 on the darkest third of the images. Also, the heatmaps and LIME maps showed that in some cases the false positives came from keying off non-pathological areas or the circular borders left by the microscope. These things made me realise that a model needs to be evaluated from multiple perspectives, as just one positive result could be misleading (Rainio et al., 2024)
+Learning to develop a CNN involved balancing conceptual understanding with practical implementation. While coding frameworks such as TensorFlow and Keras provide flexibility and deeper insight into how models work, I spent a substantial amount of time on debugging and learning new libraries, which can slow experimentation (Lao, 2020). At the same time, this hands-on process strengthened my understanding of deep learning by requiring direct interaction with data, model training, and performance evaluation, supporting the view that practical engagement is essential for developing machine learning expertise (Turgunbaev, 2025). However, the experience also highlighted the trade-off between learning the principles of deep learning and managing the technical complexity of the coding environment.
+Working with Team F taught me something different but related. When my first regression model for the Airbnb data turned out to have a multicollinearity problem, it was Sarah and Jeroen’s feedback that got me to prune the redundant location features and line my distance metric up with Adaeze’s clustering pipeline instead of running it in isolation. It’s a small example of what Torres-Martínez (2026) means by normative directionality: clear communication, defined ownership, and looping back on each other’s feedback are necessary for a group project to yield well.
+</p>
+<p>NOW WHAT</p>
+<p>
+Technically, I want to build on the foundations developed here by becoming more confident with deep learning frameworks such as TensorFlow and PyTorch, so that I spend less time debugging implementation details and more time evaluating whether a model is genuinely solving the problem of interest. In particular, the Unit 11 project showed me that developing a machine learning system is not simply a matter of maximising accuracy, but of choosing well the architecture and the type of model for a specific task. Critically, I found the individual project to be quite challenging, especially for the limited guidance available. This led me to question the effectiveness of a purely bottom-up learning approach, in which understanding is built largely through trial and error. While independently solving technical problems strengthened my confidence and problem-solving skills, it also highlighted how a lack of scaffolding can slow learning. This reflection aligns with evidence that structured guidance improves learning outcomes, particularly when developing programming skills (Tikva et al., 2023). Consequently, for future machine learning projects, I intend to invest more time in building a personal scaffold of resources, examples, and learning pathways before implementation begins.
+The whole experience made in this module, though, reinforced my interest in computational psychiatry. As a psychiatrist, I can see opportunities for machine learning to support risk assessment, diagnostic support and outcome prediction, but the Boeing 737 MAX case, the discussions around facial-recognition bias, and my own experience with biased skin-lesion classifiers all highlighted the dangers of deploying systems that are insufficiently understood. Nonetheless, these experiences have prompted me to consider even more the idea of using machine learning as a potential additional tool in clinical settings as a second-opinion aid. I hence searched the literature and found out reading the scoping review of Auf et al. (2025) that the state of research on AI systems in mental health is in the pre-implementation stage in clinical processes, with none of the reviewed studies having explored the full adoption or long-term implementation of these systems in care settings. So this highlights a 
+</p>
+<p>References</p>
+<p>
+    <ul class="refs">
+<li>Auf, H., Svedberg, P., Nygren, J., Nair, M. and Lundgren, L.E. (2025). The Use of AI in Mental Health Services to Support Decision-Making: Scoping Review. Journal of Medical Internet Research, 27. Available at: doi:10.2196/63548.
+</li><li>Herdiana, I., Alfin, K.M., Triyani, Nur, E.M. and Renny (2025). A More Precise Elbow Method for Optimum K-means Clustering. [online] arXiv.org. Available at: https://arxiv.org/abs/2502.00851 [Accessed 3 Sept. 2026].
+</li><li>Hutson, M. (2021). Robo-writers: the rise and risks of language-generating AI. Nature, 591(7848), pp.22–25. Available at: doi:10.1038/d41586-021-00530-0.
+</li><li>Moreira Cunha, B. and Diniz Junqueira Barbosa, S. (2024). Evaluating the Effectiveness of Visual Representations of SHAP Values Toward Explainable Artificial Intelligence. Proceedings of the XXIII Brazilian Symposium on Human Factors in Computing Systems, pp.1–11. Available at: doi:10.1145/3702038.3702093.
+</li><li>Natalie Lao (2020). Reorienting Machine Learning Education Towards Tinkerers and ML-Engaged Citizens. [Thesis] Massachusetts Institute of Technology. Available at: https://appinventor.mit.edu/assets/files/NatalieLao_PhD_Dissertation.pdf  [Accessed 12 Oct. 2026].
+</li><li>Rainio, O., Teuho, J., Klén, R. (2024). Evaluation metrics and statistical tests for machine learning. Scientific Reports, [online] 14(1), pp.1–14. Available at: doi:10.1038/s41598-024-56706-x.
+</li><li>Tikva, C.,Tambouris, E. (2022). The effect of scaffolding programming games and attitudes towards programming on the development of Computational Thinking. Education and Information Technologies, 28(6), pp.6845–6867. Available at: doi:10.1007/s10639-022-11465-y. 
+</li><li>Torres-Martínez, S. (2026). The coalescent architecture of agency: normative directionality as the key to human–AI integration. AI & SOCIETY, 41(6), pp.5871–5882. Available at: doi:10.1007/s00146-026-02979-x.
+</li><li>Rashid Turgunbaev (2025). Enhancing student understanding of artificial intelligence through practical neural network applications. Academic Journal of Science, Technology and Education, 1(6), pp.36–40. Available at: http://integrumpublication.org/index.php/ajste/article/view/67 [Accessed 12 Oct. 2026]. 
+</li>
+</p>
+
+<footer class="site">
+  <div class="inner">
+    <span>&copy; 2026 Damiano Tartarini</span>
+    <span><a href="https://github.com/">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

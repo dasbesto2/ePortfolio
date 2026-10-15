@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unit 2 Code — e-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="../../index.html">Damiano Tartarini — e-Portfolio</a>
+    <nav aria-label="Primary">
+      <ul class="toplinks">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../index.html#modules">Modules</a></li>
+        <li><a href="../../about.html">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<p class="crumb"><a href="../../index.html">Home</a> / <a href="index.html">Machine Learning</a> / <a href="unit-02.html">Unit 2</a> / Code</p>
+
+<div class="layout">
+  <nav class="module-nav" aria-label="Module navigation">
+<h2>Module</h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<h2>Units</h2>
+<ul>
+<li><a href="unit-01.html">Unit 1 — Introduction to ML</a></li>
+<li><a href="unit-02.html" class="current">Unit 2 — Exploratory Data Analysis</a></li>
+<li><a href="unit-03.html">Unit 3 — Correlation & Regression</a></li>
+<li><a href="unit-04.html">Unit 4 — Linear Regression with Scikit-Learn</a></li>
+<li><a href="unit-05.html">Unit 5 — Clustering</a></li>
+<li><a href="unit-06.html">Unit 6 — Clustering with Python</a></li>
+<li><a href="unit-07.html">Unit 7 — Artificial Neural Networks</a></li>
+<li><a href="unit-08.html">Unit 8 — Training an ANN</a></li>
+<li><a href="unit-09.html">Unit 9 — Convolutional Neural Networks</a></li>
+<li><a href="unit-10.html">Unit 10 — Natural Language Processing</a></li>
+<li><a href="unit-11.html">Unit 11 — Model Selection & Evaluation</a></li>
+</ul>
+<h2>Synthesis</h2>
+<ul>
+<li><a href="team-project.html">Team Project</a></li>
+<li><a href="reflection.html">Reflection</a></li>
+<li><a href="professional-development.html">Professional Development</a></li>
+</ul>
+  </nav>
+  <main class="main">
+
+<h1>Unit 2 — Python code</h1>
+    <p><a href="unit-02.html">&larr; Back to Unit 2</a></p>
+<p>Script used for the Auto-MPG exploratory data analysis. It was run in Google Colab on <code>Unit02_auto-mpg__1_.csv</code>; the results are written up on the <a href="unit-02.html">Unit 2 page</a>.</p>
+<pre><code># ============================================================
+# Exploratory Data Analysis - Auto MPG Dataset
+# ============================================================
+
+from google.colab import files
+uploaded = files.upload()   # select Unit02_auto-mpg__1_.csv when prompted
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import skew, kurtosis
+from scipy.cluster.hierarchy import dendrogram, linkage
+from scipy.spatial.distance import squareform
+from sklearn.preprocessing import StandardScaler
+
+sns.set(style=&quot;whitegrid&quot;)
+
+# Load the CSV
+df = pd.read_csv(&quot;Unit02_auto-mpg__1_.csv&quot;)
+
+# Quick look at the data
+print(&quot;Shape:&quot;, df.shape)
+df.head()
+
+# ============================================================
+# 1. IDENTIFY MISSING VALUES
+# ============================================================
+
+# The &#x27;horsepower&#x27; column is stored as text and uses &#x27;?&#x27; for missing values.
+# First, convert it to numeric, coercing &#x27;?&#x27; into NaN.
+df[&#x27;horsepower&#x27;] = pd.to_numeric(df[&#x27;horsepower&#x27;], errors=&#x27;coerce&#x27;)
+
+print(&quot;\n--- Missing values per column (after converting horsepower) ---&quot;)
+print(df.isnull().sum())
+
+print(&quot;\n--- Percentage missing per column ---&quot;)
+print((df.isnull().mean() * 100).round(2))
+
+# Visualize missing values
+plt.figure(figsize=(8, 4))
+sns.heatmap(df.isnull(), cbar=False, cmap=&quot;viridis&quot;, yticklabels=False)
+plt.title(&quot;Missing Values Heatmap&quot;)
+plt.tight_layout()
+plt.show()
+
+# Handle missing values: impute horsepower with the median
+df[&#x27;horsepower&#x27;] = df[&#x27;horsepower&#x27;].fillna(df[&#x27;horsepower&#x27;].median())
+
+print(&quot;\nMissing values after imputation:&quot;)
+print(df.isnull().sum())
+
+# ============================================================
+# 2. ESTIMATE SKEWNESS AND KURTOSIS
+# ============================================================
+
+numeric_cols = [&#x27;mpg&#x27;, &#x27;cylinders&#x27;, &#x27;displacement&#x27;, &#x27;horsepower&#x27;,
+                 &#x27;weight&#x27;, &#x27;acceleration&#x27;, &#x27;model year&#x27;]
+
+skew_kurt = pd.DataFrame({
+    &#x27;Skewness&#x27;: [skew(df[col]) for col in numeric_cols],
+    &#x27;Kurtosis&#x27;: [kurtosis(df[col]) for col in numeric_cols]  # Fisher&#x27;s definition (normal = 0)
+}, index=numeric_cols)
+
+print(&quot;\n--- Skewness and Kurtosis of numeric features ---&quot;)
+print(skew_kurt.round(3))
+
+# Visualize distribution shapes
+fig, axes = plt.subplots(3, 3, figsize=(15, 12))
+axes = axes.flatten()
+for i, col in enumerate(numeric_cols):
+    sns.histplot(df[col], kde=True, ax=axes[i], color=&quot;steelblue&quot;)
+    axes[i].set_title(f&quot;{col}\nSkew={skew(df[col]):.2f}, Kurt={kurtosis(df[col]):.2f}&quot;)
+for j in range(len(numeric_cols), len(axes)):
+    fig.delaxes(axes[j])
+plt.tight_layout()
+plt.show()
+
+# ============================================================
+# 3. CORRELATION HEAT MAP
+# ============================================================
+
+corr_matrix = df[numeric_cols].corr()
+
+plt.figure(figsize=(9, 7))
+sns.heatmap(corr_matrix, annot=True, fmt=&quot;.2f&quot;, cmap=&quot;coolwarm&quot;,
+            square=True, linewidths=0.5)
+plt.title(&quot;Correlation Heatmap - Auto MPG Features&quot;)
+plt.tight_layout()
+plt.show()
+
+# ============================================================
+# 4. SCATTER PLOTS FOR DIFFERENT PARAMETERS
+# ============================================================
+
+# Pairwise scatter plot matrix
+sns.pairplot(df[numeric_cols], diag_kind=&quot;kde&quot;, corner=True,
+             plot_kws={&#x27;alpha&#x27;: 0.6, &#x27;s&#x27;: 25, &#x27;edgecolor&#x27;: &#x27;k&#x27;})
+plt.suptitle(&quot;Pairwise Scatter Plots - Auto MPG Features&quot;, y=1.02)
+plt.show()
+
+# A few individual scatter plots of specific relationships
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+sns.scatterplot(data=df, x=&quot;weight&quot;, y=&quot;mpg&quot;, ax=axes[0, 0], color=&quot;teal&quot;)
+axes[0, 0].set_title(&quot;MPG vs Weight&quot;)
+
+sns.scatterplot(data=df, x=&quot;horsepower&quot;, y=&quot;mpg&quot;, ax=axes[0, 1], color=&quot;darkorange&quot;)
+axes[0, 1].set_title(&quot;MPG vs Horsepower&quot;)
+
+sns.scatterplot(data=df, x=&quot;displacement&quot;, y=&quot;mpg&quot;, ax=axes[1, 0], color=&quot;purple&quot;)
+axes[1, 0].set_title(&quot;MPG vs Displacement&quot;)
+
+sns.scatterplot(data=df, x=&quot;acceleration&quot;, y=&quot;mpg&quot;, ax=axes[1, 1], color=&quot;crimson&quot;)
+axes[1, 1].set_title(&quot;MPG vs Acceleration&quot;)
+
+plt.tight_layout()
+plt.show()
+
+# ============================================================
+# 5. DENDROGRAM (Hierarchical Clustering)
+# ============================================================
+
+# --- 5a. Feature clustering ---
+# Groups variables that behave similarly, using (1 - correlation) as the
+# distance metric. Complements the correlation heatmap above.
+corr_dist = 1 - corr_matrix.abs()
+condensed_dist = squareform(corr_dist.values, checks=False)
+feature_linkage = linkage(condensed_dist, method=&quot;average&quot;)
+
+plt.figure(figsize=(9, 5))
+dendrogram(feature_linkage, labels=corr_matrix.columns.tolist(),
+           leaf_rotation=90, color_threshold=0.3)
+plt.title(&quot;Feature Dendrogram (based on correlation distance)&quot;)
+plt.ylabel(&quot;Distance (1 - |correlation|)&quot;)
+plt.tight_layout()
+plt.show()
+
+# --- 5b. Car (observation) clustering ---
+# Groups similar cars based on standardized numeric specs.
+# Ward linkage minimizes within-cluster variance - good default for this.
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(df[numeric_cols])
+car_linkage = linkage(scaled_features, method=&quot;ward&quot;)
+
+plt.figure(figsize=(12, 6))
+dendrogram(car_linkage, truncate_mode=&quot;lastp&quot;, p=30,
+           show_leaf_counts=True, leaf_rotation=90)
+plt.title(&quot;Car Dendrogram (Ward linkage, last 30 merged clusters)&quot;)
+plt.xlabel(&quot;Cluster size (number of cars)&quot;)
+plt.ylabel(&quot;Distance&quot;)
+plt.tight_layout()
+plt.show()
+
+# ============================================================
+# 6. REPLACE CATEGORICAL VALUES WITH NUMERICAL VALUES
+# ============================================================
+
+# In this dataset, &#x27;origin&#x27; is the categorical feature representing the
+# country/region of manufacture:
+#   1 = America (USA), 2 = Europe, 3 = Japan/Asia
+# It is already encoded numerically in the raw file, but let&#x27;s demonstrate
+# the mapping explicitly (useful if you ever get a version with text labels).
+
+origin_map_text_to_num = {&quot;America&quot;: 1, &quot;Europe&quot;: 2, &quot;Japan&quot;: 3, &quot;Asia&quot;: 3}
+origin_map_num_to_text = {1: &quot;America&quot;, 2: &quot;Europe&quot;, 3: &quot;Japan&quot;}
+
+# Create a readable label column for reference/EDA purposes
+df[&#x27;origin_label&#x27;] = df[&#x27;origin&#x27;].map(origin_map_num_to_text)
+
+# Confirm origin is numeric (int) as required for modeling
+df[&#x27;origin&#x27;] = df[&#x27;origin&#x27;].map(origin_map_text_to_num).fillna(df[&#x27;origin&#x27;]).astype(int)
+
+print(&quot;\n--- Origin encoding check ---&quot;)
+print(df[[&#x27;origin&#x27;, &#x27;origin_label&#x27;]].drop_duplicates().sort_values(&#x27;origin&#x27;))
+
+# Distribution of cars by origin
+plt.figure(figsize=(6, 4))
+sns.countplot(data=df, x=&quot;origin_label&quot;, palette=&quot;Set2&quot;,
+              order=[&quot;America&quot;, &quot;Europe&quot;, &quot;Japan&quot;])
+plt.title(&quot;Number of Cars by Origin&quot;)
+plt.xlabel(&quot;Origin&quot;)
+plt.ylabel(&quot;Count&quot;)
+plt.tight_layout()
+plt.show()
+
+# Final cleaned dataframe preview
+print(&quot;\n--- Final cleaned dataframe ---&quot;)
+df.head()
+</code></pre>
+
+
+  </main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <span>&copy; 2026 Damiano Tartarini</span>
+    <span><a href="https://github.com/">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

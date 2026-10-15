@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unit 5 — e-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="../../index.html">Damiano Tartarini — e-Portfolio</a>
+    <nav aria-label="Primary">
+      <ul class="toplinks">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../index.html#modules">Modules</a></li>
+        <li><a href="../../about.html">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<p class="crumb"><a href="../../index.html">Home</a> / <a href="index.html">Machine Learning</a> / Unit 5</p>
+
+<div class="layout">
+  <nav class="module-nav" aria-label="Module navigation">
+<h2>Module</h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<h2>Units</h2>
+<ul>
+<li><a href="unit-01.html">Unit 1 — Introduction to ML</a></li>
+<li><a href="unit-02.html">Unit 2 — Exploratory Data Analysis</a></li>
+<li><a href="unit-03.html">Unit 3 — Correlation & Regression</a></li>
+<li><a href="unit-04.html">Unit 4 — Linear Regression with Scikit-Learn</a></li>
+<li><a href="unit-05.html" class="current">Unit 5 — Clustering</a></li>
+<li><a href="unit-06.html">Unit 6 — Clustering with Python</a></li>
+<li><a href="unit-07.html">Unit 7 — Artificial Neural Networks</a></li>
+<li><a href="unit-08.html">Unit 8 — Training an ANN</a></li>
+<li><a href="unit-09.html">Unit 9 — Convolutional Neural Networks</a></li>
+<li><a href="unit-10.html">Unit 10 — Natural Language Processing</a></li>
+<li><a href="unit-11.html">Unit 11 — Model Selection & Evaluation</a></li>
+</ul>
+<h2>Synthesis</h2>
+<ul>
+<li><a href="team-project.html">Team Project</a></li>
+<li><a href="reflection.html">Reflection</a></li>
+<li><a href="professional-development.html">Professional Development</a></li>
+</ul>
+  </nav>
+  <main class="main">
+
+<h1>Unit 5 — Clustering</h1>
+<div class="tags"><span class="tag">LO1 Ethics &amp; professionalism</span><span class="tag">LO2 Dataset applicability</span></div>
+<p>A conceptual unit: comparing two interactive visualisations of k-means, then a worked Jaccard-distance calculation by hand.</p>
+
+<h2>Wiki activity — comparing two k-means animations</h2>
+<p>Both sources illustrate k-means but emphasise different parts of the same logic. The <a href="https://www.naftaliharris.com/blog/visualizing-k-means-clustering/">Naftali Harris visualisation</a> presents the algorithm as an alternating two-step loop — reassign every point to its nearest centroid, then move each centroid to the mean of its assigned points, repeating until nothing moves — and its Voronoi-shaded regions make the "nearest centroid" rule visible. The <a href="https://shabal.in/visuals/kmeans/3.html">Shabalin visualisation</a>, by contrast, shows a converged outcome: three tight groups with lines drawn from each point to its centroid, highlighting the mean-based pull of the algorithm, with a stray point from a poor initial choice showing how initialisation can change the final grouping.</p>
+<p>In short, one visualisation explains the mechanism (partitioning space by proximity, iterating, and the pitfalls of initialisation and choosing k), the other shows the payoff (well-separated clusters settling cleanly). Both rest on the same insight: points in a cluster should sit close to its centre.</p>
+
+<h2>e-Portfolio activity — Jaccard distance</h2>
+<p>Pathological test results for three patients (Y = yes, P = positive, N = negative, A = absent / not tested):</p>
+<table>
+<tr><th>Name</th><th>Gender</th><th>Fever</th><th>Cough</th><th>Test-1</th><th>Test-2</th><th>Test-3</th><th>Test-4</th></tr>
+<tr><td>Jack</td><td>M</td><td>Y</td><td>N</td><td>P</td><td>N</td><td>N</td><td>A</td></tr>
+<tr><td>Mary</td><td>F</td><td>Y</td><td>N</td><td>P</td><td>A</td><td>P</td><td>N</td></tr>
+<tr><td>Jim</td><td>M</td><td>Y</td><td>P</td><td>N</td><td>N</td><td>N</td><td>A</td></tr>
+</table>
+
+<h3>How it works</h3>
+<ul>
+<li>Gender is a <em>symmetric</em> attribute, so it is excluded from the Jaccard calculation entirely.</li>
+<li>Fever, Cough and Test-1 to Test-4 are treated as <em>asymmetric binary</em> attributes: Y/P → 1 (positive/present), N → 0 (negative/absent), A → missing (that attribute is skipped for the pair being compared, since it wasn't tested).</li>
+<li>For asymmetric binary variables, (0,0) matches don't count toward similarity (a shared <em>absence</em> isn't meaningful), so:</li>
+</ul>
+<p style="text-align:center"><em>d</em>(<em>i</em>,<em>j</em>) = (<em>r</em> + <em>s</em>) / (<em>q</em> + <em>r</em> + <em>s</em>)</p>
+<p>where <em>q</em> = attributes where both are 1, <em>r</em> = <em>i</em> is 1 and <em>j</em> is 0, <em>s</em> = <em>i</em> is 0 and <em>j</em> is 1.</p>
+<p><strong>Worked example (Jack, Mary):</strong> Test-4 is skipped for Jack (A) and Test-2 is skipped for Mary (A), leaving Fever, Cough, Test-1 and Test-3. Fever and Test-1 are both positive (<em>q</em> = 2), Test-3 differs (<em>r</em> + <em>s</em> = 1) and Cough is a shared absence that is ignored, giving 1 / 3 ≈ 0.333.</p>
+
+<h3>Result</h3>
+<table>
+<tr><th>Pair</th><th>Jaccard distance</th></tr>
+<tr><td>Jack, Mary</td><td>0.333</td></tr>
+<tr><td>Jack, Jim</td><td>0.667</td></tr>
+<tr><td>Jim, Mary</td><td>0.750</td></tr>
+</table>
+<p>Jack and Mary are the most similar pair; Jim and Mary are the least similar.</p>
+
+<div class="artifact-link">
+  <a href="unit-05-code.html">&#128196; View the Python code for this calculation</a>
+</div>
+
+  </main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <span>&copy; 2026 Damiano Tartarini</span>
+    <span><a href="https://github.com/">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

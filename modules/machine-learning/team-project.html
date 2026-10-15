@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Team Project — e-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="../../index.html">Damiano Tartarini — e-Portfolio</a>
+    <nav aria-label="Primary">
+      <ul class="toplinks">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../index.html#modules">Modules</a></li>
+        <li><a href="../../about.html">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<p class="crumb"><a href="../../index.html">Home</a> / <a href="index.html">Machine Learning</a> / Team Project</p>
+
+<div class="layout">
+  <nav class="module-nav" aria-label="Module navigation">
+<h2>Module</h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<h2>Units</h2>
+<ul>
+<li><a href="unit-01.html">Unit 1 — Introduction to ML</a></li>
+<li><a href="unit-02.html">Unit 2 — Exploratory Data Analysis</a></li>
+<li><a href="unit-03.html">Unit 3 — Correlation & Regression</a></li>
+<li><a href="unit-04.html">Unit 4 — Linear Regression with Scikit-Learn</a></li>
+<li><a href="unit-05.html">Unit 5 — Clustering</a></li>
+<li><a href="unit-06.html">Unit 6 — Clustering with Python</a></li>
+<li><a href="unit-07.html">Unit 7 — Artificial Neural Networks</a></li>
+<li><a href="unit-08.html">Unit 8 — Training an ANN</a></li>
+<li><a href="unit-09.html">Unit 9 — Convolutional Neural Networks</a></li>
+<li><a href="unit-10.html">Unit 10 — Natural Language Processing</a></li>
+<li><a href="unit-11.html">Unit 11 — Model Selection & Evaluation</a></li>
+</ul>
+<h2>Synthesis</h2>
+<ul>
+<li><a href="team-project.html" class="current">Team Project</a></li>
+<li><a href="reflection.html">Reflection</a></li>
+<li><a href="professional-development.html">Professional Development</a></li>
+</ul>
+  </nav>
+  <main class="main">
+
+<h1>Team Project — Airbnb Listing Prices in New York City</h1>
+<div class="tags"><span class="tag">LO3 Applying ML techniques</span><span class="tag">LO4 Team &amp; professional practice</span></div>
+<p><strong>Team F, Group 4:</strong> Damiano Tartarini, Adaeze Ugochukwu, Jeroen Vreijsen, Sarah Woodcock.</p>
+<p>Research question: <em>How is distance from Times Square associated with Airbnb listing prices in New York City, and what listing segments can be identified based on location and property characteristics?</em></p>
+
+<h2>Roles</h2>
+<table>
+<tr><th>Member</th><th>Contribution</th></tr>
+<tr><td>Jeroen Vreijsen</td><td>Data preparation; introduction; distance-to-Times-Square feature; mapping.</td></tr>
+<tr><td>Damiano Tartarini</td><td>Regression modelling (linear, multilinear, polynomial) and its write-up.</td></tr>
+<tr><td>Adaeze Ugochukwu</td><td>Clustering (k-means, elbow method, silhouette evaluation, cluster profiling).</td></tr>
+<tr><td>Sarah Woodcock</td><td>Report structure, reference list, final formatting and submission.</td></tr>
+</table>
+
+<h2>Meeting notes</h2>
+<div class="card">
+<h3>Week 1 — assignment review</h3>
+<p>Reviewed the Kaggle Airbnb dataset and brainstormed possible question themes.</p>
+<h3>Week 2 — assignment breakdown</h3>
+<p>Split into four chunks, one per member. Jeroen to prepare data and hand to Adaeze (clustering) and Damiano (regression); Sarah to research supporting literature, start the reference list, and keep the report's structure cohesive.</p>
+<h3>Week 3 — model analysis and review</h3>
+<p>Working schedule agreed: data preparation (17 Aug), regression and clustering in parallel (21 Aug), draft report (27 Aug), final read-through (1–2 Sept), contingency window (3–6 Sept).</p>
+</div>
+<div class="card">
+<h3>25 Aug 2026 — Team F catch-up</h3>
+<p><em>Attendees: Adaeze, Sarah, Jeroen, Damiano.</em></p>
+<ul>
+<li>Jeroen: introduction drafted; question refined to include listing segments; data cleaned (zero-value listings removed, null reviews set to zero); distance-to-Times-Square feature and map added.</li>
+<li>Damiano: regression steps talked through and justified; candidate references added. Distance alone gave R² = 0.15 — agreed this was low and needed investigating further (multilinear and polynomial approaches followed from this).</li>
+<li>Discussed whether outliers (e.g. "Billionaire's Row" listings) should be removed — agreed they were valid data points and, since regression is comparatively robust to them, kept them in rather than taking a logarithm purely to suppress them.</li>
+<li>Agreed a train/validation split was appropriate for the regression after a short debate on whether it was necessary for a model that is "just trying to fit the data."</li>
+</ul>
+<p><strong>Action items:</strong> Adaeze to finish clustering and notify Sarah; final check-in meeting scheduled; Sarah to circulate the draft report for review before then.</p>
+</div>
+<div class="card">
+<h3>2 Sept 2026 — Team F catch-up</h3>
+<p><em>Attendees: Damiano, Jeroen, Sarah.</em></p>
+<ul>
+<li>Agreed the report answers the research question; read through end-to-end with minor clarity edits.</li>
+<li>Sarah to tidy formatting, find a couple of recent references for the clustering section, and fold image captions into the figures themselves so they don't count against the word limit.</li>
+<li>Final Word document to go to TurnItIn and to all team members on 3 Sept, with a short review window before Sarah submits.</li>
+</ul>
+<p><strong>Action items:</strong> all members to confirm acceptance of the final report and submit individual peer reviews.</p>
+</div>
+
+<h2>Final report</h2>
+<div class="card report">
+<h3>Development Team Project — Project Report</h3>
+<p>By Damiano Tartarini, Adaeze Ugochukwu, Jeroen Vreijsen and Sarah Woodcock (Team F, Group 4)</p>
+
+<h3>Introduction</h3>
+<p>Airbnb provides short-term accommodation across many locations and price ranges in New York City. Location is an important factor in pricing (Deboosere et al., 2019). Therefore, we assume that distance from the most centrally located touristic area is associated with listing price. Times Square has been described as the "epicenter of NYC tourism" (Weaver, 2025). Thus, our research question is as follows:</p>
+<blockquote><em>How is distance from Times Square associated with Airbnb listing prices in New York City, and what listing segments can be identified based on location and property characteristics?</em></blockquote>
+<p>We used regression and clustering to identify different types of Airbnb listings. The main purpose of this research is to generate insights that could help Airbnb understand pricing patterns and different listing segments in New York City.</p>
+<figure>
+<img src="../../assets/images/team_project_fig1_nyc_boroughs_map.png" alt="Map of the five boroughs of New York City with the approximate location of Times Square marked in Manhattan">
+</figure>
+<p class="src">Adapted from: <a href="https://ontheworldmap.com/usa/city/new-york-city/nyc-boroughs-map.html">ontheworldmap.com/usa/city/new-york-city/nyc-boroughs-map.html</a></p>
+
+<h3>Data preparation</h3>
+<p>We cleaned the original 2019 Airbnb New York dataset (Dgomonov, 2019), containing 48,895 Airbnb listings. The cleaned version consisted of 48,884 listings. We added an extra column, <code>distance_times_square_km</code>, which calculates distance from Times Square using latitude and longitude.</p>
+
+<h3>Exploratory data analysis</h3>
+<p>We first visualised listing prices according to geographic location:</p>
+<figure>
+<img src="../../assets/images/team_project_fig2_price_geographic_distribution.png" alt="Scatter map of Airbnb listings in NYC coloured by log10 nightly price, with Times Square marked as a red dot">
+</figure>
+<p>The red dot represents the location of Times Square. Higher prices are concentrated around Manhattan/Times Square. Listings further away are generally cheaper.</p>
+<p>Next, we visualised the median Airbnb price by distance from Times Square:</p>
+<figure>
+<img src="../../assets/images/team_project_fig3_median_price_by_distance.png" alt="Bar chart of median Airbnb price by distance band from Times Square">
+</figure>
+<p>Listings within 0–2 km of Times Square have a median price of $185. At 2–5 km, this falls to $150. At 5–10 km, it falls to $95. For a distance &gt;10 km, the price is around $75.</p>
+<p>Evidently, Airbnb prices tend to decrease as distance from Times Square increases. Interestingly, prices slightly increase from 20+ km, making the relationship not perfectly straight.</p>
+<p>However, distance from Times Square may not be the only factor influencing prices. Borough, room type, quality, neighbourhood and other characteristics may also have an influence. Therefore, regression and clustering are used to further investigate these relationships.</p>
+
+<h3>Regression</h3>
+<p>Through regression, we predicted the value of price based on how one or more variables change. We first decided to transform price into its logarithmic form, log(price), to reduce the impact of outlying prices ($5–10k).</p>
+<p>We checked multicollinearity amongst distance and borough. Numbers greater than 10 could represent severe multicollinearity, whilst lower numbers show reduced to no multicollinearity (Wooldridge, 2020). Distance had a Variance Inflation Factor (VIF) of 1.9. Borough analysis showed a VIF &gt;10, which is high. Thus, the split of credit between borough and distance should not be taken as separate correlations.</p>
+<p>Secondly, we split the data into a test and a training set, respectively containing 20% and 80% of the data. We used borough to stratify the split so as to avoid underrepresenting the rarest labels and to ensure the data splits each contain proportionate amounts of the overall data (Géron, 2025).</p>
+<p>We used three different regression approaches and compared them:</p>
+<ol>
+<li>A simple linear regression on distance alone found each +1 km was associated with a ~5.9% price drop (R²=0.15).</li>
+</ol>
+<figure>
+<img src="../../assets/images/team_project_fig4_linear_regression.png" alt="Scatter plot of log price against distance from Times Square with a fitted linear regression line">
+</figure>
+<ol start="2">
+<li>A multilinear regression approach with all features; controlling for room type and borough caused distance's effect to shrink, showing it was probably mediated by borough and room type.</li>
+</ol>
+<figure>
+<img src="../../assets/images/team_project_fig5_multilinear_coefficients.png" alt="Horizontal bar chart of standardised coefficients from the multiple linear regression">
+</figure>
+<ol start="3">
+<li>We also performed a polynomial regression approach to determine nonlinear relationships (Géron, 2025). We checked first with degree 2, which improved fit (R²=0.51), revealing price drops steeply near the centre and then flattens out. Degree 3 didn't add any significant improvement. In Figure 6, degree 1 is the linear model.</li>
+</ol>
+<figure>
+<img src="../../assets/images/team_project_fig6_polynomial_regression.png" alt="Polynomial regression fits of degree 1, 2 and 3 for log price against distance">
+</figure>
+<p>The degree-2 polynomial achieved a test RMSE of 0.488 (log-price units) and R² of 0.512, both an improvement over the plain linear model (RMSE 0.496, R² 0.496). This confirms that the true relationship between distance and price is not linear. Although the model predicts that price sky-rockets at some point, we feel this should be further investigated.</p>
+<figure>
+<img src="../../assets/images/team_project_fig7_learning_curves.png" alt="Learning curves showing training and validation RMSE converging as training set size grows">
+</figure>
+<p>Ultimately, the learning curves graph showed train/validation RMSE converging closely. This shows that the model fairly predicts price, without overfitting the data (Géron, 2025).</p>
+<p>As there were no signs of overfitting, we chose not to use any regularisation technique on the model.</p>
+
+<h3>Clustering</h3>
+<p>Clustering was used to identify distinct groups of Airbnb listings with similar location and property characteristics (Géron, 2025).</p>
+<p>The optimal number of clusters was evaluated using the elbow method — identifying the point at which the data turns a corner and no longer grows (Herdiana et al., 2025) — and average silhouette scores.</p>
+<p>Although k = 2 produced the highest silhouette score (0.392, from a range of −1 to +1), this solution was considered too coarse to provide meaningful segmentation. The three-cluster solution achieved the next highest silhouette score (0.252) and corresponded with the point at which improvements in within-cluster variation began to flatten; therefore, k = 3 was selected.</p>
+<p>K-means clustering was performed on six scaled variables. Min-max scaling and standardisation techniques as described by Kelsy Cabello-Solorzano et al. (2023) were used. Figure 8 uses principal component analysis to visualise the resulting clusters in two dimensions. Clustering was not performed on the principal components themselves. Together, PC1 and PC2 explain 52.5% of the variance. The clusters occupy distinguishable regions of the PCA space, although some overlap remains.</p>
+<figure>
+<img src="../../assets/images/team_project_fig8_pca_clusters.png" alt="PCA scatter plot of the three k-means clusters in two dimensions">
+</figure>
+<p>Cluster profiling (Table 1) indicates that Cluster 1 represents a long-stay segment, with a 30-night median minimum stay, high availability (316 days) and hosts with a median of 16 listings. Cluster 2 represents short-stay listings, with the lowest median price ($95), greatest distance from Times Square (8.7 km) and highest review activity (2.12 reviews/month). Cluster 3 comprises the largest segment (54.6%), characterised by zero median availability and low review activity.</p>
+<table>
+<caption><strong>Table 1:</strong> Profile characteristics of the three k-means Airbnb listing clusters</caption>
+<tr><th></th><th>Cluster 1</th><th>Cluster 2</th><th>Cluster 3</th></tr>
+<tr><th scope="row">Size</th><td>4,594 (9.4%)</td><td>17,608 (36.0%)</td><td>26,682 (54.6%)</td></tr>
+<tr><th scope="row">Median price</th><td>$150</td><td>$95</td><td>$115</td></tr>
+<tr><th scope="row">Median distance from Times Sq.</th><td>3.9 km (closest)</td><td>8.7 km (furthest)</td><td>5.7 km (middle)</td></tr>
+<tr><th scope="row">Median minimum nights</th><td><strong>30</strong></td><td>2</td><td>3</td></tr>
+<tr><th scope="row">Median # reviews</th><td>1</td><td>28</td><td>2</td></tr>
+<tr><th scope="row">Median reviews/month</th><td>0.09</td><td>2.12</td><td>0.12</td></tr>
+<tr><th scope="row">Median availability (days/365)</th><td><strong>316</strong></td><td>197</td><td><strong>0</strong></td></tr>
+<tr><th scope="row">Median host listings count</th><td><strong>16</strong></td><td>1</td><td>1</td></tr>
+<tr><th scope="row">Dominant room type</th><td>Entire home/apt (68%)</td><td>Private room (54%)</td><td>Entire home/apt (55%)</td></tr>
+<tr><th scope="row">Dominant borough</th><td>Manhattan (70%)</td><td>Brooklyn (44%), spread across boroughs</td><td>Manhattan (49%) / Brooklyn (43%)</td></tr>
+</table>
+<p>Similarly to regression, cluster prices decline with increasing distance from Times Square ($150, $115 and $95), but listing segments also differ in host, availability and booking characteristics. However, the moderate silhouette score and overlap in the PCA projection indicate that these segments should be interpreted as broad listing profiles rather than sharply separated groups.</p>
+
+<h3>Conclusion</h3>
+<p>Listings further from Times Square tend to be cheaper, although the relationship isn't perfectly linear. But borough, room type and other listing characteristics also explain a large part of price differences. The clustering backed this up, revealing three broad types of listings with different prices, availability, host behaviour and review activity. Overall, Airbnb pricing reflects a mix of location and listing characteristics, rather than any single factor.</p>
+
+<h3>References</h3>
+<ul class="refs">
+<li>ChatGPT conversation on data cleaning and Exploratory Data Analysis: <a href="https://chatgpt.com/share/6a88935e-4bc8-83eb-9413-8584ef5f1ff3">chatgpt.com/share/6a88935e-4bc8-83eb-9413-8584ef5f1ff3</a></li>
+<li>Deboosere, R., Kerrigan, D.J., Wachsmuth, D. and El-Geneidy, A. (2019) 'Location, location and professionalization: a multilevel hedonic analysis of Airbnb listing prices and revenue', <em>Regional Studies, Regional Science</em>, 6(1), pp. 143–156. doi: 10.1080/21681376.2019.1592699.</li>
+<li>Dgomonov. 2019. <em>New York City Airbnb Open Data</em>. [Online]. [3 September 2026]. Available from: <a href="https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data">kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data</a></li>
+<li>Géron, A. (2025) <em>Hands-On Machine Learning with Scikit-Learn and PyTorch: Concepts, Tools, and Techniques to Build Intelligent Systems</em>. 1st edn. Sebastopol, CA: O'Reilly Media.</li>
+<li>Herdiana, I., Alfin, K.M., Triyani, Nur, E.M. and Renny (2025). <em>A More Precise Elbow Method for Optimum K-means Clustering</em>. [online] arXiv.org. Available at: <a href="https://arxiv.org/abs/2502.00851">arxiv.org/abs/2502.00851</a> [Accessed 3 Sept. 2026].</li>
+<li>Kelsy Cabello-Solorzano, de, O., Peña, M.A., Correia, L. and Tallón-Ballesteros, A.J. (2023). The Impact of Data Normalization on the Accuracy of Machine Learning Algorithms: A Comparative Analysis. <em>Lecture notes in networks and systems</em>, 750, pp. 344–353. doi:10.1007/978-3-031-42536-3_33.</li>
+<li>Ontheworldmap.com team (no date) <em>New York City boroughs map</em>. Available at: <a href="https://ontheworldmap.com/usa/city/new-york-city/nyc-boroughs-map.html">ontheworldmap.com/usa/city/new-york-city/nyc-boroughs-map.html</a> (Accessed: 29 August 2026).</li>
+<li>Weaver, S. (2025) 'The Times Square, New York guide', <em>Time Out New York</em>, 2 May. Available at: <a href="https://www.timeout.com/newyork/things-to-do/new-york-attractions-times-square">timeout.com/newyork/things-to-do/new-york-attractions-times-square</a> (Accessed: 29 August 2026).</li>
+<li>Wooldridge, J.M. (2020) <em>Introductory Econometrics: A Modern Approach</em>. 7th edn. Cengage.</li>
+</ul>
+</div>
+
+<h2>Feedback from tutor</h2>
+<div class="card">
+      <h3>What was done well:  </h3>
+    <p>The report presents a clear business question and maintains a consistent focus on the relationship between Airbnb prices and distance from Times Square.  The data preparation process is explained clearly, and the creation of the 
+    distance feature is relevant to the research question.  The report applies both regression and clustering techniques, demonstrating an understanding of the classical machine learning methods required for the 
+    assignment.  Visualisations are used throughout the report to support the analysis and help communicate the key findings.  The discussion recognises that price is influenced by multiple factors and does not rely solely on distance as an explanation. 
+      </p>
+      <h3>What could be improved:    </h3>
+      <p>The business rationale is quite limited. You should have explained more clearly why this question is important for Airbnb and how the findings could support 
+    business decisions.  The methodology lacks some depth. While the modelling approaches are described, there is limited critical discussion of why specific methods were 
+    selected and what their limitations are.  The clustering analysis is relatively brief. The identified clusters are described, but there is limited interpretation of how Airbnb could use these segments in 
+    practice.  The business impact and recommendations are not developed sufficiently. The report focuses mainly on the technical findings rather than translating them into 
+    actionable business insights.  Some conclusions are based on observed relationships, but stronger critical evaluation of the results and model performance would improve the quality of 
+    the discussion.  </p>
+        <h3>General comments for future work:    </h3>
+      <p>This report demonstrates a reasonable understanding of regression and clustering techniques and applies them appropriately to the dataset.  For future work, you should place greater emphasis on explaining the business 
+    value of the analysis and linking technical findings to practical recommendations.  You could strengthen the report by providing more critical evaluation of model results, discussing limitations in greater detail, and explaining how the 
+    identified clusters could support decision-making.  Overall, the work shows a good effort in applying machine learning techniques, but further analysis, critical discussion, and business interpretation would 
+    improve the report. </p>
+</div>
+
+  </main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <span>&copy; 2026 Damiano Tartarini</span>
+    <span><a href="https://github.com/">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

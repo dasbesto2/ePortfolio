@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unit 6 Wine Code — e-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="../../index.html">Damiano Tartarini — e-Portfolio</a>
+    <nav aria-label="Primary">
+      <ul class="toplinks">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../index.html#modules">Modules</a></li>
+        <li><a href="../../about.html">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<p class="crumb"><a href="../../index.html">Home</a> / <a href="index.html">Machine Learning</a> / <a href="unit-06.html">Unit 6</a> / Wine code</p>
+
+<div class="layout">
+  <nav class="module-nav" aria-label="Module navigation">
+<h2>Module</h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<h2>Units</h2>
+<ul>
+<li><a href="unit-01.html">Unit 1 — Introduction to ML</a></li>
+<li><a href="unit-02.html">Unit 2 — Exploratory Data Analysis</a></li>
+<li><a href="unit-03.html">Unit 3 — Correlation & Regression</a></li>
+<li><a href="unit-04.html">Unit 4 — Linear Regression with Scikit-Learn</a></li>
+<li><a href="unit-05.html">Unit 5 — Clustering</a></li>
+<li><a href="unit-06.html" class="current">Unit 6 — Clustering with Python</a></li>
+<li><a href="unit-07.html">Unit 7 — Artificial Neural Networks</a></li>
+<li><a href="unit-08.html">Unit 8 — Training an ANN</a></li>
+<li><a href="unit-09.html">Unit 9 — Convolutional Neural Networks</a></li>
+<li><a href="unit-10.html">Unit 10 — Natural Language Processing</a></li>
+<li><a href="unit-11.html">Unit 11 — Model Selection & Evaluation</a></li>
+</ul>
+<h2>Synthesis</h2>
+<ul>
+<li><a href="team-project.html">Team Project</a></li>
+<li><a href="reflection.html">Reflection</a></li>
+<li><a href="professional-development.html">Professional Development</a></li>
+</ul>
+  </nav>
+  <main class="main">
+
+<h1>Unit 6 — Wine K-means code</h1>
+<p>Script that clusters the Wine chemistry dataset with K-means (K = 3) and compares the clusters with the true wine labels. The method and results are written up on the <a href="unit-06.html">Unit 6 page</a>.</p>
+<pre><code>&quot;&quot;&quot;
+K-Means Clustering on the Wine Dataset
+------------------------------------------
+Steps:
+1. Load the data.
+2. Remove the &#x27;Wine&#x27; column before clustering. It&#x27;s the true class label
+  (1, 2, or 3) - not a chemical measurement - and including it would let
+  the algorithm &quot;cheat&quot; by clustering directly on the answer. We keep it
+  aside separately for evaluation afterward.
+3. Standardize the remaining numeric features. This is especially
+  important here because the columns are on very different scales
+  (e.g., &#x27;Proline&#x27; is in the hundreds/thousands while &#x27;Hue&#x27; is close to
+  1) - without scaling, K-Means&#x27; Euclidean distance would be dominated
+  by the large-magnitude features.
+4. Try several values of K (Elbow Method).
+5. Fit K-Means with K = 3 (as required).
+6. Compare the 3 clusters to the true &#x27;Wine&#x27; labels using a crosstab,
+  Adjusted Rand Index (ARI), and Normalized Mutual Information (NMI).
+&quot;&quot;&quot;
+
+import pandas as pd
+import numpy as np
+import matplotlib
+matplotlib.use(&quot;Agg&quot;)
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score
+from sklearn.decomposition import PCA
+
+# ------------------------------------------------------------------
+# 1. Load data
+# ------------------------------------------------------------------
+df = pd.read_csv(&quot;/mnt/user-data/uploads/Unit06_wine.csv&quot;)
+print(&quot;Original data shape:&quot;, df.shape)
+print(df.head(), &quot;\n&quot;)
+
+# ------------------------------------------------------------------
+# 2. Remove the label column (&#x27;Wine&#x27;) before clustering.
+#    K-Means uses Euclidean distance over the chemical measurements;
+#    the class label itself is not a measurement and must be excluded
+#    from the feature matrix (kept aside for later evaluation).
+# ------------------------------------------------------------------
+X = df.drop(columns=[&quot;Wine&quot;])
+y_true = df[&quot;Wine&quot;]
+
+print(&quot;Feature columns used for clustering:&quot;, list(X.columns), &quot;\n&quot;)
+
+# Standardize features - crucial here since scales vary hugely
+# (e.g., Proline ~300-1700 vs Hue ~0.5-1.7)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# ------------------------------------------------------------------
+# 3. Elbow method: try K = 1..10
+# ------------------------------------------------------------------
+inertias = []
+K_range = range(1, 11)
+for k in K_range:
+   km = KMeans(n_clusters=k, random_state=42, n_init=10)
+   km.fit(X_scaled)
+   inertias.append(km.inertia_)
+
+plt.figure(figsize=(7, 5))
+plt.plot(list(K_range), inertias, marker=&quot;o&quot;)
+plt.xlabel(&quot;Number of clusters (K)&quot;)
+plt.ylabel(&quot;Inertia (within-cluster sum of squares)&quot;)
+plt.title(&quot;Elbow Method for Optimal K - Wine Dataset&quot;)
+plt.xticks(list(K_range))
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig(&quot;/home/claude/wine_elbow_method.png&quot;, dpi=150)
+plt.close()
+print(&quot;Saved elbow plot -&gt; wine_elbow_method.png\n&quot;)
+
+# ------------------------------------------------------------------
+# 4. Fit K-Means with K = 3 (required)
+# ------------------------------------------------------------------
+kmeans3 = KMeans(n_clusters=3, random_state=42, n_init=10)
+cluster_labels = kmeans3.fit_predict(X_scaled)
+df[&quot;cluster&quot;] = cluster_labels
+
+print(&quot;K = 3 cluster centers (in standardized feature space):&quot;)
+print(pd.DataFrame(kmeans3.cluster_centers_, columns=X.columns), &quot;\n&quot;)
+
+# ------------------------------------------------------------------
+# 5. Compare clusters to true Wine labels
+# ------------------------------------------------------------------
+ct = pd.crosstab(df[&quot;Wine&quot;], df[&quot;cluster&quot;], rownames=[&quot;True Wine Label&quot;], colnames=[&quot;Cluster&quot;])
+print(&quot;Crosstab of true wine class vs. K-Means cluster assignment:&quot;)
+print(ct, &quot;\n&quot;)
+
+ari = adjusted_rand_score(y_true, cluster_labels)
+nmi = normalized_mutual_info_score(y_true, cluster_labels)
+
+print(f&quot;Adjusted Rand Index (ARI):        {ari:.4f}&quot;)
+print(f&quot;Normalized Mutual Information:    {nmi:.4f}&quot;)
+print(&quot;(1.0 = perfect agreement with true wine labels, 0.0 = random)\n&quot;)
+
+# Map each cluster to its majority true label, then compute accuracy
+cluster_to_label = {}
+for cluster_num in sorted(df[&quot;cluster&quot;].unique()):
+   majority_label = df.loc[df[&quot;cluster&quot;] == cluster_num, &quot;Wine&quot;].mode()[0]
+   cluster_to_label[cluster_num] = majority_label
+
+df[&quot;predicted_wine&quot;] = df[&quot;cluster&quot;].map(cluster_to_label)
+accuracy = (df[&quot;predicted_wine&quot;] == df[&quot;Wine&quot;]).mean()
+print(&quot;Cluster -&gt; majority wine-label mapping:&quot;, cluster_to_label)
+print(f&quot;Approximate matching accuracy vs. true wine labels: {accuracy:.2%}\n&quot;)
+
+# ------------------------------------------------------------------
+# Visualize using PCA (reduce 13 chemical features to 2D for plotting)
+# ------------------------------------------------------------------
+pca = PCA(n_components=2, random_state=42)
+X_pca = pca.fit_transform(X_scaled)
+df[&quot;pca1&quot;] = X_pca[:, 0]
+df[&quot;pca2&quot;] = X_pca[:, 1]
+
+fig, axes = plt.subplots(1, 2, figsize=(13, 5.5))
+
+label_colors = {1: &quot;tab:blue&quot;, 2: &quot;tab:orange&quot;, 3: &quot;tab:green&quot;}
+for lbl, color in label_colors.items():
+   subset = df[df[&quot;Wine&quot;] == lbl]
+   axes[0].scatter(subset[&quot;pca1&quot;], subset[&quot;pca2&quot;], label=f&quot;Wine {lbl}&quot;, color=color, alpha=0.7)
+axes[0].set_title(&quot;True Wine Labels (PCA projection)&quot;)
+axes[0].set_xlabel(f&quot;PC1 ({pca.explained_variance_ratio_[0]:.1%} var)&quot;)
+axes[0].set_ylabel(f&quot;PC2 ({pca.explained_variance_ratio_[1]:.1%} var)&quot;)
+axes[0].legend()
+
+scatter = axes[1].scatter(df[&quot;pca1&quot;], df[&quot;pca2&quot;], c=df[&quot;cluster&quot;], cmap=&quot;viridis&quot;, alpha=0.7)
+axes[1].set_title(&quot;K-Means Clusters (K = 3, PCA projection)&quot;)
+axes[1].set_xlabel(f&quot;PC1 ({pca.explained_variance_ratio_[0]:.1%} var)&quot;)
+axes[1].set_ylabel(f&quot;PC2 ({pca.explained_variance_ratio_[1]:.1%} var)&quot;)
+legend1 = axes[1].legend(*scatter.legend_elements(), title=&quot;Cluster&quot;)
+axes[1].add_artist(legend1)
+
+plt.tight_layout()
+plt.savefig(&quot;/home/claude/wine_clusters_vs_labels.png&quot;, dpi=150)
+plt.close()
+print(&quot;Saved comparison plot -&gt; wine_clusters_vs_labels.png&quot;)
+
+# Save annotated dataframe
+df.to_csv(&quot;/home/claude/wine_with_clusters.csv&quot;, index=False)
+print(&quot;Saved annotated dataset -&gt; wine_with_clusters.csv&quot;)
+</code></pre>
+<p><a href="unit-06.html">&larr; Back to Unit 6</a></p>
+
+  </main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <span>&copy; 2026 Damiano Tartarini</span>
+    <span><a href="https://github.com/">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

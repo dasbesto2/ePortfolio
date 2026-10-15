@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unit 3 — e-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="../../index.html">Damiano Tartarini — e-Portfolio</a>
+    <nav aria-label="Primary">
+      <ul class="toplinks">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../index.html#modules">Modules</a></li>
+        <li><a href="../../about.html">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<p class="crumb"><a href="../../index.html">Home</a> / <a href="index.html">Machine Learning</a> / Unit 3</p>
+
+<div class="layout">
+  <nav class="module-nav" aria-label="Module navigation">
+<h2>Module</h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<h2>Units</h2>
+<ul>
+<li><a href="unit-01.html">Unit 1 — Introduction to ML</a></li>
+<li><a href="unit-02.html">Unit 2 — Exploratory Data Analysis</a></li>
+<li><a href="unit-03.html" class="current">Unit 3 — Correlation & Regression</a></li>
+<li><a href="unit-04.html">Unit 4 — Linear Regression with Scikit-Learn</a></li>
+<li><a href="unit-05.html">Unit 5 — Clustering</a></li>
+<li><a href="unit-06.html">Unit 6 — Clustering with Python</a></li>
+<li><a href="unit-07.html">Unit 7 — Artificial Neural Networks</a></li>
+<li><a href="unit-08.html">Unit 8 — Training an ANN</a></li>
+<li><a href="unit-09.html">Unit 9 — Convolutional Neural Networks</a></li>
+<li><a href="unit-10.html">Unit 10 — Natural Language Processing</a></li>
+<li><a href="unit-11.html">Unit 11 — Model Selection & Evaluation</a></li>
+</ul>
+<h2>Synthesis</h2>
+<ul>
+<li><a href="team-project.html">Team Project</a></li>
+<li><a href="reflection.html">Reflection</a></li>
+<li><a href="professional-development.html">Professional Development</a></li>
+</ul>
+  </nav>
+  <main class="main">
+
+<h1>Unit 3 — Correlation &amp; Regression</h1>
+<div class="tags"><span class="tag">LO3 Applying ML techniques</span></div>
+<p>Hands-on notebook covering covariance, Pearson's correlation coefficient, and linear, multiple and polynomial regression.</p>
+
+<div class="artifact-link">
+  <a href="notebooks/Unit03_covariance_pearson_regression.ipynb">&#128196; notebooks/Unit03_covariance_pearson_regression.ipynb</a>
+</div>
+
+<h2>Covariance and Pearson's r</h2>
+<p>Two synthetic variables of 1,000 points each: <code>data1</code> (mean ≈ 100.8, sd ≈ 19.6) and <code>data2 = data1 + noise</code> (mean ≈ 151.1, sd ≈ 22.4). The covariance is <strong>389.8</strong> and Pearson's r is <strong>0.888</strong>.</p>
+<p>Covariance is positive, so the variables move together, but its size depends on the units of each variable and is hard to interpret. Pearson's r rescales it to the range −1 to 1, so 0.888 reads directly as a strong positive linear relationship.</p>
+<figure>
+<img src="../../assets/images/unit03_covariance_scatter.png" alt="Scatter plot of data1 against data2 showing a strong positive linear relationship">
+<figcaption>data1 vs. data2 — Pearson's r = 0.888.</figcaption>
+</figure>
+
+<h2>Simple linear regression</h2>
+<p><code>scipy.stats.linregress</code> on a 13-point example (car age vs. speed) returns the slope, intercept and r, which are used to build a prediction function <code>y = intercept + slope × x</code>. For this data the fit is slope ≈ −1.75, intercept ≈ 103.1 and r ≈ −0.76 (a fairly strong negative relationship), so the predicted value at x = 10 is about <strong>85.6</strong>.</p>
+<p>The first version of this cell failed with <code>NameError: name 'stat' is not defined</code>, because I wrote <code>stat.linregress</code> instead of using the imported <code>stats</code> module. The next cell uses the correct name and runs.</p>
+
+<h2>Multiple linear regression</h2>
+<p>Using scikit-learn's <code>LinearRegression</code>, CO<sub>2</sub> emission is predicted from two independent variables, car weight and engine volume. The notebook interprets the coefficients (weight 0.00755, volume 0.00781): each extra 1 kg adds about 0.0076 g of CO<sub>2</sub>, and each extra 1 cm³ adds about 0.0078 g. As a check, a 1300 cm³ car weighing 2300 kg is predicted at about 107 g, and increasing the weight by 1000 kg raises that to 107.21 + 1000 × 0.00755 ≈ <strong>114.76 g</strong>.</p>
+
+<h2>Polynomial regression</h2>
+<p>When data is not a straight line, a degree-3 polynomial (<code>numpy.polyfit</code> / <code>poly1d</code>) fits the speed of 18 cars passing a toll booth at different times of day. The curve follows the dip and rise in speed far better than a straight line would (R² ≈ 0.94 for this fit).</p>
+<figure>
+<img src="../../assets/images/unit03_polynomial_fit.png" alt="Scatter of car speed against time of day with a fitted cubic polynomial curve">
+<figcaption>Cubic polynomial fit to speed vs. time of day.</figcaption>
+</figure>
+
+<p style="font-size:14px;color:var(--ink-soft)">Note: the multiple-regression cell reads <code>cars.csv</code>, which is not stored in the repo, so that cell will only run where the file is available.</p>
+
+  </main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <span>&copy; 2026 Damiano Tartarini</span>
+    <span><a href="https://github.com/">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

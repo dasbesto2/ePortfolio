@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unit 6 — e-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="../../index.html">Damiano Tartarini — e-Portfolio</a>
+    <nav aria-label="Primary">
+      <ul class="toplinks">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../index.html#modules">Modules</a></li>
+        <li><a href="../../about.html">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<p class="crumb"><a href="../../index.html">Home</a> / <a href="index.html">Machine Learning</a> / Unit 6</p>
+
+<div class="layout">
+  <nav class="module-nav" aria-label="Module navigation">
+<h2>Module</h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<h2>Units</h2>
+<ul>
+<li><a href="unit-01.html">Unit 1 — Introduction to ML</a></li>
+<li><a href="unit-02.html">Unit 2 — Exploratory Data Analysis</a></li>
+<li><a href="unit-03.html">Unit 3 — Correlation & Regression</a></li>
+<li><a href="unit-04.html">Unit 4 — Linear Regression with Scikit-Learn</a></li>
+<li><a href="unit-05.html">Unit 5 — Clustering</a></li>
+<li><a href="unit-06.html" class="current">Unit 6 — Clustering with Python</a></li>
+<li><a href="unit-07.html">Unit 7 — Artificial Neural Networks</a></li>
+<li><a href="unit-08.html">Unit 8 — Training an ANN</a></li>
+<li><a href="unit-09.html">Unit 9 — Convolutional Neural Networks</a></li>
+<li><a href="unit-10.html">Unit 10 — Natural Language Processing</a></li>
+<li><a href="unit-11.html">Unit 11 — Model Selection & Evaluation</a></li>
+</ul>
+<h2>Synthesis</h2>
+<ul>
+<li><a href="team-project.html">Team Project</a></li>
+<li><a href="reflection.html">Reflection</a></li>
+<li><a href="professional-development.html">Professional Development</a></li>
+</ul>
+  </nav>
+  <main class="main">
+
+<h1>Unit 6 — Clustering with Python</h1>
+<div class="tags"><span class="tag">LO2 Dataset applicability</span><span class="tag">LO3 Applying ML techniques</span><span class="tag">LO4 Team &amp; professional practice</span></div>
+<h2>Clustering task</h2>
+<p>K-means clustering applied to three different datasets: <strong>Iris</strong>, <strong>Wine</strong> and <strong>Weather</strong> (weatherAUS). Each has its own Python script, linked from its section below.</p>
+
+<h2>Iris</h2>
+<p>The standard Iris dataset with the columns <code>sepal_length</code>, <code>sepal_width</code>, <code>petal_length</code>, <code>petal_width</code> and <code>species</code>. What I did:</p>
+<ul>
+<li>Removed the non-numeric <code>species</code> column for clustering.</li>
+<li>Ran K-means (including K = 3) and compared the K = 3 clusters against the actual species labels.</li>
+</ul>
+<h3>What the script does</h3>
+<ol>
+<li><strong>Drops the species column</strong> before clustering — it is text, and K-means needs numeric features since it computes Euclidean distances. The 4 remaining columns are standardised and used for clustering.</li>
+<li><strong>Elbow method</strong> runs K = 1–10 to show inertia dropping off, confirming K = 3 is a reasonable choice.</li>
+<li><strong>Fits K-means with K = 3</strong> as required.</li>
+<li><strong>Compares clusters to true species</strong> via a crosstab, Adjusted Rand Index and Normalized Mutual Information.</li>
+</ol>
+<div class="artifact-link">
+  <a href="unit-06-code-iris.html">&#128196; View the Python code for the Iris clustering</a>
+</div>
+<h3>Results</h3>
+<table>
+<tr><th>Species</th><th>Cluster 0</th><th>Cluster 1</th><th>Cluster 2</th></tr>
+<tr><td>setosa</td><td>0</td><td>50</td><td>0</td></tr>
+<tr><td>versicolor</td><td>39</td><td>0</td><td>11</td></tr>
+<tr><td>virginica</td><td>14</td><td>0</td><td>36</td></tr>
+</table>
+<ul>
+<li><strong>Setosa</strong> is perfectly separated — it forms its own cluster (Cluster 1) with zero mixing.</li>
+<li><strong>Versicolor</strong> and <strong>virginica</strong> overlap somewhat — 11 versicolor points are grouped with virginica-heavy Cluster 2, and 14 virginica points fall into the versicolor-heavy Cluster 0.</li>
+<li><strong>Adjusted Rand Index: 0.62</strong>, <strong>Normalized Mutual Information: 0.66</strong> — moderately strong agreement with the true species labels (1.0 = perfect match).</li>
+<li>Roughly <strong>83%</strong> of points end up in the cluster matching their majority species.</li>
+</ul>
+<p>This matches the well-known pattern in the Iris dataset: setosa is linearly separable from the other two species based on petal measurements, while versicolor and virginica have some natural overlap in feature space, making them harder for an unsupervised method to fully distinguish.</p>
+<figure>
+<img src="../../assets/images/unit06_iris_elbow.png" alt="Elbow plot of inertia against K for the Iris dataset">
+<figcaption>Iris — elbow method, K = 1 to 10.</figcaption>
+</figure>
+<figure>
+<img src="../../assets/images/unit06_iris_clusters_vs_species.png" alt="Side-by-side petal length and width scatter plots coloured by true species and by K-means cluster">
+<figcaption>Iris — true species labels (left) vs. K-means clusters, K = 3 (right).</figcaption>
+</figure>
+
+<h2>Wine</h2>
+<p>Excellent results — very strong agreement between clusters and true labels.</p>
+<h3>What the script does</h3>
+<ol>
+<li><strong>Drops the Wine column</strong> (the true class label 1/2/3) before clustering — it is a category, not a chemical measurement, so keeping it in would let the model "cheat".</li>
+<li><strong>Standardises the 13 remaining chemical features</strong> — critical here since Proline ranges into the hundreds and thousands while Hue is close to 1; without scaling, K-means would be dominated entirely by Proline.</li>
+<li><strong>Elbow method</strong> across K = 1–10 to see where added clusters stop reducing inertia much (supports K = 3).</li>
+<li><strong>Fits K-means with K = 3</strong> as required.</li>
+<li><strong>Compares clusters to the true wine labels.</strong></li>
+</ol>
+<div class="artifact-link">
+  <a href="unit-06-code-wine.html">&#128196; View the Python code for the Wine clustering</a>
+</div>
+<h3>Results</h3>
+<table>
+<tr><th>True label</th><th>Cluster 0</th><th>Cluster 1</th><th>Cluster 2</th></tr>
+<tr><td>Wine 1</td><td>0</td><td>0</td><td>59</td></tr>
+<tr><td>Wine 2</td><td>65</td><td>3</td><td>3</td></tr>
+<tr><td>Wine 3</td><td>0</td><td>48</td><td>0</td></tr>
+</table>
+<ul>
+<li><strong>Adjusted Rand Index: 0.90</strong></li>
+<li><strong>Normalized Mutual Information: 0.88</strong></li>
+<li><strong>~97% matching accuracy</strong> against the true labels (best mapping: Cluster 0 → Wine 2, Cluster 1 → Wine 3, Cluster 2 → Wine 1).</li>
+</ul>
+<p>This is a much cleaner separation than the Iris case — the three cultivars are strongly distinguishable by their chemical profiles (alcohol, flavanoids, colour intensity, proline, etc.), so unsupervised K-means recovers the true grouping almost perfectly, with only 6 wines out of 178 misassigned.</p>
+<figure>
+<img src="../../assets/images/unit06_wine_elbow.png" alt="Elbow plot of inertia against K for the Wine dataset">
+<figcaption>Wine — elbow method, K = 1 to 10.</figcaption>
+</figure>
+<figure>
+<img src="../../assets/images/unit06_wine_pca_clusters.png" alt="Side-by-side PCA projections coloured by true wine label and by K-means cluster">
+<figcaption>Wine — true labels (left) vs. K-means clusters, K = 3 (right), in a PCA projection.</figcaption>
+</figure>
+
+<h2>Weather</h2>
+<h3>What the script does</h3>
+<ol>
+<li><strong>Removes non-numeric columns</strong> — <code>RainToday</code> and <code>RainTomorrow</code> are Yes/No text labels, not measurements a Euclidean distance can be computed on, so they are excluded from clustering. (<code>RainTomorrow</code> is kept aside purely to colour a reference plot afterwards, since this dataset has no ground-truth cluster labels like species or wine class.)</li>
+<li><strong>Drops rows with missing values</strong> — from 145,460 rows to 120,381 complete rows, since K-means cannot handle NaNs.</li>
+<li><strong>Standardises the 12 numeric weather features</strong> (temperature, rainfall, humidity, wind, pressure) since they are on very different scales.</li>
+<li><strong>Runs K-means for K = 2 through K = 6</strong>, tracking inertia (elbow) and silhouette score for each.</li>
+<li><strong>Visualises every K</strong> with 2-D scatter plots using PCA (since 12 features cannot be plotted directly) — all six panels side by side, plus a reference panel coloured by <code>RainTomorrow</code>.</li>
+</ol>
+<div class="artifact-link">
+  <a href="unit-06-code-weather.html">&#128196; View the Python code for the Weather clustering</a>
+</div>
+<h3>Key findings</h3>
+<table>
+<tr><th>K</th><th>Inertia</th><th>Silhouette (sampled)</th></tr>
+<tr><td>2</td><td>1,069,604</td><td>0.231</td></tr>
+<tr><td>3</td><td>911,739</td><td>0.225</td></tr>
+<tr><td>4</td><td>829,797</td><td>0.166</td></tr>
+<tr><td>5</td><td>764,249</td><td>0.174</td></tr>
+<tr><td>6</td><td>703,919</td><td>0.168</td></tr>
+</table>
+<ul>
+<li>Silhouette score peaks at K = 2 (0.231), meaning the data most naturally splits into two broad groups — likely something like "cooler/humid" vs. "warmer/dry" weather regimes, visible as a clean vertical split in the K = 2 panel.</li>
+<li>As K increases, the clusters just subdivide these two broad regions further rather than revealing genuinely new structure — inertia keeps dropping (it always does), but silhouette drops off, meaning the extra splits are less well separated.</li>
+<li>Unlike Iris and Wine, there is no true "answer key" here (no species or wine-class column), so this is a purely exploratory result rather than something to validate against ground truth.</li>
+<li>The reference panel comparing PC1/PC2 to <code>RainTomorrow</code> shows rainy days leaning toward the upper region (higher PC2 — likely correlating with humidity), but there is no clean separation — rain is not strongly determined by these same-day readings alone, which makes sense since predicting tomorrow's rain is a genuinely harder problem than clustering today's conditions.</li>
+</ul>
+<figure>
+<img src="../../assets/images/unit06_weather_clusters_k2to6.png" alt="Six PCA scatter panels showing K-means clusters for K = 2 to 6 and a reference panel coloured by RainTomorrow">
+<figcaption>Weather — K-means clusters for K = 2 to 6 in PCA space, plus RainTomorrow reference.</figcaption>
+</figure>
+<figure>
+<img src="../../assets/images/unit06_weather_elbow_silhouette.png" alt="Elbow and silhouette score plots for K = 2 to 6 on the weather data">
+<figcaption>Weather — elbow method (left) and sampled silhouette score (right).</figcaption>
+</figure>
+<figure>
+<img src="../../assets/images/unit06_weather_k3_real_features.png" alt="Scatter of MaxTemp against Humidity3pm coloured by K-means cluster for K = 3">
+<figcaption>Weather — K = 3 clusters on real features (MaxTemp vs. Humidity3pm).</figcaption>
+</figure>
+
+<h2>Team project</h2>
+<p>This is also the unit in which Team F's project began: the Airbnb NYC pricing question was scoped and the initial regression/clustering plan agreed. See the <a href="team-project.html">Team Project</a> page for the proposal, meeting notes, full report and the evaluation against the Unit 11 submission.</p>
+
+  </main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <span>&copy; 2026 Damiano Tartarini</span>
+    <span><a href="https://github.com/">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

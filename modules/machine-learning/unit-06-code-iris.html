@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unit 6 Iris Code — e-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="../../index.html">Damiano Tartarini — e-Portfolio</a>
+    <nav aria-label="Primary">
+      <ul class="toplinks">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../index.html#modules">Modules</a></li>
+        <li><a href="../../about.html">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<p class="crumb"><a href="../../index.html">Home</a> / <a href="index.html">Machine Learning</a> / <a href="unit-06.html">Unit 6</a> / Iris code</p>
+
+<div class="layout">
+  <nav class="module-nav" aria-label="Module navigation">
+<h2>Module</h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<h2>Units</h2>
+<ul>
+<li><a href="unit-01.html">Unit 1 — Introduction to ML</a></li>
+<li><a href="unit-02.html">Unit 2 — Exploratory Data Analysis</a></li>
+<li><a href="unit-03.html">Unit 3 — Correlation & Regression</a></li>
+<li><a href="unit-04.html">Unit 4 — Linear Regression with Scikit-Learn</a></li>
+<li><a href="unit-05.html">Unit 5 — Clustering</a></li>
+<li><a href="unit-06.html" class="current">Unit 6 — Clustering with Python</a></li>
+<li><a href="unit-07.html">Unit 7 — Artificial Neural Networks</a></li>
+<li><a href="unit-08.html">Unit 8 — Training an ANN</a></li>
+<li><a href="unit-09.html">Unit 9 — Convolutional Neural Networks</a></li>
+<li><a href="unit-10.html">Unit 10 — Natural Language Processing</a></li>
+<li><a href="unit-11.html">Unit 11 — Model Selection & Evaluation</a></li>
+</ul>
+<h2>Synthesis</h2>
+<ul>
+<li><a href="team-project.html">Team Project</a></li>
+<li><a href="reflection.html">Reflection</a></li>
+<li><a href="professional-development.html">Professional Development</a></li>
+</ul>
+  </nav>
+  <main class="main">
+
+<h1>Unit 6 — Iris K-means code</h1>
+<p>Script that clusters the Iris dataset with K-means (K = 3) and compares the clusters with the true species. The method and results are written up on the <a href="unit-06.html">Unit 6 page</a>.</p>
+<pre><code>&quot;&quot;&quot;
+K-Means Clustering on the Iris Dataset
+----------------------------------------
+Steps:
+1. Load the data.
+2. Drop the non-numeric &#x27;species&#x27; column (K-Means needs numeric features
+  because it computes Euclidean distances - text labels can&#x27;t be used).
+3. Try several values of K using the Elbow Method (inertia) to see how
+  many clusters the data naturally suggests.
+4. Fit K-Means with K = 3 (as required).
+5. Compare the 3 clusters found by K-Means to the true &#x27;species&#x27; labels
+  using a crosstab/confusion-matrix-style table, Adjusted Rand Index (ARI)
+  and Normalized Mutual Information (NMI) - both are standard metrics for
+  comparing a clustering result to known ground-truth labels.
+&quot;&quot;&quot;
+
+import pandas as pd
+import numpy as np
+import matplotlib
+matplotlib.use(&quot;Agg&quot;)
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import adjusted_rand_score, normalized_mutual_info_score, confusion_matrix
+
+# ------------------------------------------------------------------
+# 1. Load data
+# ------------------------------------------------------------------
+df = pd.read_csv(&quot;/mnt/user-data/uploads/Unit06_iris.csv&quot;)
+print(&quot;Original data shape:&quot;, df.shape)
+print(df.head(), &quot;\n&quot;)
+
+# ------------------------------------------------------------------
+# 2. Remove the non-numeric column (&#x27;species&#x27;) before clustering.
+#    K-Means relies on Euclidean distance, which is only defined for
+#    numeric features, so the species label must be excluded from
+#    the feature matrix (we keep it aside for later evaluation).
+# ------------------------------------------------------------------
+X = df.drop(columns=[&quot;species&quot;])
+y_true = df[&quot;species&quot;]
+
+print(&quot;Feature columns used for clustering:&quot;, list(X.columns), &quot;\n&quot;)
+
+# Standardize features (recommended for K-Means so that no single
+# feature with a larger scale dominates the distance calculation)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# ------------------------------------------------------------------
+# 3. Elbow method: try K = 1..10 to see how inertia changes
+# ------------------------------------------------------------------
+inertias = []
+K_range = range(1, 11)
+for k in K_range:
+   km = KMeans(n_clusters=k, random_state=42, n_init=10)
+   km.fit(X_scaled)
+   inertias.append(km.inertia_)
+
+plt.figure(figsize=(7, 5))
+plt.plot(list(K_range), inertias, marker=&quot;o&quot;)
+plt.xlabel(&quot;Number of clusters (K)&quot;)
+plt.ylabel(&quot;Inertia (within-cluster sum of squares)&quot;)
+plt.title(&quot;Elbow Method for Optimal K&quot;)
+plt.xticks(list(K_range))
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig(&quot;/home/claude/elbow_method.png&quot;, dpi=150)
+plt.close()
+print(&quot;Saved elbow plot -&gt; elbow_method.png\n&quot;)
+
+# ------------------------------------------------------------------
+# 4. Fit K-Means with K = 3 (required)
+# ------------------------------------------------------------------
+kmeans3 = KMeans(n_clusters=3, random_state=42, n_init=10)
+cluster_labels = kmeans3.fit_predict(X_scaled)
+df[&quot;cluster&quot;] = cluster_labels
+
+print(&quot;K = 3 cluster centers (in standardized feature space):&quot;)
+print(pd.DataFrame(kmeans3.cluster_centers_, columns=X.columns), &quot;\n&quot;)
+
+# ------------------------------------------------------------------
+# 5. Compare clusters to true species labels
+# ------------------------------------------------------------------
+# Crosstab: rows = true species, columns = predicted cluster
+ct = pd.crosstab(df[&quot;species&quot;], df[&quot;cluster&quot;], rownames=[&quot;Species&quot;], colnames=[&quot;Cluster&quot;])
+print(&quot;Crosstab of true species vs. K-Means cluster assignment:&quot;)
+print(ct, &quot;\n&quot;)
+
+ari = adjusted_rand_score(y_true, cluster_labels)
+nmi = normalized_mutual_info_score(y_true, cluster_labels)
+
+print(f&quot;Adjusted Rand Index (ARI):        {ari:.4f}&quot;)
+print(f&quot;Normalized Mutual Information:    {nmi:.4f}&quot;)
+print(&quot;(1.0 = perfect agreement with true species labels, 0.0 = random)\n&quot;)
+
+# Simple &quot;accuracy&quot;: map each cluster to its majority species, then
+# check what fraction of points match.
+mapping = ct.idxmax(axis=0)  # majority species for each cluster number... actually need cluster-&gt;species
+# Build cluster -&gt; most common true species
+cluster_to_species = {}
+for cluster_num in sorted(df[&quot;cluster&quot;].unique()):
+   majority_species = df.loc[df[&quot;cluster&quot;] == cluster_num, &quot;species&quot;].mode()[0]
+   cluster_to_species[cluster_num] = majority_species
+
+df[&quot;predicted_species&quot;] = df[&quot;cluster&quot;].map(cluster_to_species)
+accuracy = (df[&quot;predicted_species&quot;] == df[&quot;species&quot;]).mean()
+print(&quot;Cluster -&gt; majority species mapping:&quot;, cluster_to_species)
+print(f&quot;Approximate matching accuracy vs. true species: {accuracy:.2%}\n&quot;)
+
+# ------------------------------------------------------------------
+# Visualize clusters vs. true species (using petal length/width,
+# the two most separating features)
+# ------------------------------------------------------------------
+fig, axes = plt.subplots(1, 2, figsize=(13, 5.5))
+
+species_colors = {&quot;setosa&quot;: &quot;tab:blue&quot;, &quot;versicolor&quot;: &quot;tab:orange&quot;, &quot;virginica&quot;: &quot;tab:green&quot;}
+for sp, color in species_colors.items():
+   subset = df[df[&quot;species&quot;] == sp]
+   axes[0].scatter(subset[&quot;petal_length&quot;], subset[&quot;petal_width&quot;], label=sp, color=color, alpha=0.7)
+axes[0].set_title(&quot;True Species Labels&quot;)
+axes[0].set_xlabel(&quot;Petal Length&quot;)
+axes[0].set_ylabel(&quot;Petal Width&quot;)
+axes[0].legend()
+
+scatter = axes[1].scatter(df[&quot;petal_length&quot;], df[&quot;petal_width&quot;], c=df[&quot;cluster&quot;], cmap=&quot;viridis&quot;, alpha=0.7)
+axes[1].set_title(&quot;K-Means Clusters (K = 3)&quot;)
+axes[1].set_xlabel(&quot;Petal Length&quot;)
+axes[1].set_ylabel(&quot;Petal Width&quot;)
+legend1 = axes[1].legend(*scatter.legend_elements(), title=&quot;Cluster&quot;)
+axes[1].add_artist(legend1)
+
+plt.tight_layout()
+plt.savefig(&quot;/home/claude/clusters_vs_species.png&quot;, dpi=150)
+plt.close()
+print(&quot;Saved comparison plot -&gt; clusters_vs_species.png&quot;)
+
+# Save the annotated dataframe (with cluster + predicted species) as CSV
+df.to_csv(&quot;/home/claude/iris_with_clusters.csv&quot;, index=False)
+print(&quot;Saved annotated dataset -&gt; iris_with_clusters.csv&quot;)
+</code></pre>
+<p><a href="unit-06.html">&larr; Back to Unit 6</a></p>
+
+  </main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <span>&copy; 2026 Damiano Tartarini</span>
+    <span><a href="https://github.com/">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

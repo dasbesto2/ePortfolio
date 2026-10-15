@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unit 2 — e-Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="inner">
+    <a class="brand" href="../../index.html">Damiano Tartarini — e-Portfolio</a>
+    <nav aria-label="Primary">
+      <ul class="toplinks">
+        <li><a href="../../index.html">Home</a></li>
+        <li><a href="../../index.html#modules">Modules</a></li>
+        <li><a href="../../about.html">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<p class="crumb"><a href="../../index.html">Home</a> / <a href="index.html">Machine Learning</a> / Unit 2</p>
+
+<div class="layout">
+  <nav class="module-nav" aria-label="Module navigation">
+<h2>Module</h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+</ul>
+<h2>Units</h2>
+<ul>
+<li><a href="unit-01.html">Unit 1 — Introduction to ML</a></li>
+<li><a href="unit-02.html" class="current">Unit 2 — Exploratory Data Analysis</a></li>
+<li><a href="unit-03.html">Unit 3 — Correlation & Regression</a></li>
+<li><a href="unit-04.html">Unit 4 — Linear Regression with Scikit-Learn</a></li>
+<li><a href="unit-05.html">Unit 5 — Clustering</a></li>
+<li><a href="unit-06.html">Unit 6 — Clustering with Python</a></li>
+<li><a href="unit-07.html">Unit 7 — Artificial Neural Networks</a></li>
+<li><a href="unit-08.html">Unit 8 — Training an ANN</a></li>
+<li><a href="unit-09.html">Unit 9 — Convolutional Neural Networks</a></li>
+<li><a href="unit-10.html">Unit 10 — Natural Language Processing</a></li>
+<li><a href="unit-11.html">Unit 11 — Model Selection & Evaluation</a></li>
+</ul>
+<h2>Synthesis</h2>
+<ul>
+<li><a href="team-project.html">Team Project</a></li>
+<li><a href="reflection.html">Reflection</a></li>
+<li><a href="professional-development.html">Professional Development</a></li>
+</ul>
+  </nav>
+  <main class="main">
+
+<h1>Unit 2 — Exploratory Data Analysis</h1>
+<div class="tags"><span class="tag">LO2 Dataset applicability</span><span class="tag">LO3 Applying ML techniques</span></div>
+<p>Exploratory data analysis of the Auto MPG dataset: missing values, skewness and kurtosis, correlation, scatter plots, hierarchical clustering and categorical encoding.</p>
+
+<div class="artifact-link">
+  <a href="unit-02-code.html">&#128196; View the Python code for this analysis</a>
+</div>
+
+<h2>Auto MPG — Exploratory Data Analysis Report</h2>
+
+<h3>Dataset</h3>
+<p>398 cars, 9 variables (<code>mpg</code>, <code>cylinders</code>, <code>displacement</code>, <code>horsepower</code>, <code>weight</code>, <code>acceleration</code>, <code>model year</code>, <code>origin</code>, <code>car name</code>). Source: UCI Auto MPG dataset (<code>Unit02_auto-mpg__1_.csv</code>).</p>
+
+<h3>Missing values</h3>
+<p>Only <code>horsepower</code> has gaps: 6 of 398 rows (1.5%), originally marked <code>?</code>. Imputed with the column median.</p>
+<figure>
+<img src="../../assets/images/unit02_missing_values_heatmap.png" alt="Heatmap of missing values by column, showing gaps only in horsepower">
+<figcaption>Missing values heatmap.</figcaption>
+</figure>
+
+<h3>Skewness &amp; kurtosis</h3>
+<table>
+<tr><th>Variable</th><th>Skewness</th><th>Kurtosis</th></tr>
+<tr><td>horsepower</td><td>1.10</td><td>0.74</td></tr>
+<tr><td>displacement</td><td>0.72</td><td>-0.75</td></tr>
+<tr><td>weight</td><td>0.53</td><td>-0.79</td></tr>
+<tr><td>cylinders</td><td>0.53</td><td>-1.37</td></tr>
+<tr><td>mpg</td><td>0.46</td><td>-0.52</td></tr>
+<tr><td>acceleration</td><td>0.28</td><td>0.40</td></tr>
+<tr><td>model year</td><td>0.01</td><td>-1.18</td></tr>
+</table>
+<p><code>horsepower</code> is the most right-skewed and the only variable with heavier-than-normal tails (positive kurtosis); the rest are mildly skewed and flatter than normal.</p>
+<figure>
+<img src="../../assets/images/unit02_skew_kurtosis_distributions.png" alt="Histograms with density curves for each numeric variable, titled with skewness and kurtosis">
+<figcaption>Distributions with skewness and kurtosis.</figcaption>
+</figure>
+
+<h3>Correlation</h3>
+<p>Correlation with <code>mpg</code>:</p>
+<table>
+<tr><th>Variable</th><th>r with mpg</th></tr>
+<tr><td>weight</td><td>-0.83</td></tr>
+<tr><td>displacement</td><td>-0.80</td></tr>
+<tr><td>cylinders</td><td>-0.78</td></tr>
+<tr><td>horsepower</td><td>-0.77</td></tr>
+<tr><td>model year</td><td>0.58</td></tr>
+<tr><td>acceleration</td><td>0.42</td></tr>
+</table>
+<p><code>weight</code>, <code>displacement</code>, <code>cylinders</code>, and <code>horsepower</code> are also strongly correlated with each other (0.85–0.95) — they move together as "engine size", and all move opposite to <code>mpg</code>.</p>
+<figure>
+<img src="../../assets/images/unit02_correlation_heatmap.png" alt="Annotated correlation heatmap of the numeric Auto MPG features">
+<figcaption>Correlation heatmap.</figcaption>
+</figure>
+
+<h3>Scatter plots</h3>
+<p><code>mpg</code> declines with <code>weight</code>, <code>displacement</code>, and <code>horsepower</code>, each showing a curved (non-linear) downward trend. <code>acceleration</code> and <code>model year</code> show a weaker positive relationship with <code>mpg</code> — newer, quicker-accelerating cars trend slightly more efficient.</p>
+<figure>
+<img src="../../assets/images/unit02_pairwise_scatter_matrix.png" alt="Pairwise scatter plot matrix of the numeric features">
+<figcaption>Pairwise scatter matrix.</figcaption>
+</figure>
+<figure>
+<img src="../../assets/images/unit02_mpg_scatter_plots.png" alt="Four scatter plots of mpg against weight, horsepower, displacement and acceleration">
+<figcaption>MPG vs. weight, horsepower, displacement and acceleration.</figcaption>
+</figure>
+
+<h3>Hierarchical clustering</h3>
+<p>Feature dendrogram: <code>weight</code>, <code>displacement</code>, <code>horsepower</code>, and <code>cylinders</code> merge into one tight cluster, confirming the correlation structure; <code>mpg</code> branches off separately. Car dendrogram (Ward linkage): splits broadly into large domestic cars vs. smaller, more fuel-efficient imports.</p>
+<figure>
+<img src="../../assets/images/unit02_feature_dendrogram.png" alt="Dendrogram of features clustered by correlation distance">
+<figcaption>Feature dendrogram.</figcaption>
+</figure>
+<figure>
+<img src="../../assets/images/unit02_car_dendrogram.png" alt="Truncated Ward-linkage dendrogram of cars">
+<figcaption>Car dendrogram (Ward linkage, last 30 merged clusters).</figcaption>
+</figure>
+
+<h3>Categorical encoding</h3>
+<p><code>origin</code> was already numeric: 1 = America (249 cars), 2 = Europe (70), 3 = Japan (79). American cars dominate the sample (~63%).</p>
+<figure>
+<img src="../../assets/images/unit02_cars_by_origin.png" alt="Bar chart of the number of cars by origin">
+<figcaption>Number of cars by origin.</figcaption>
+</figure>
+
+<h3>Conclusion</h3>
+<p>Fuel economy is driven mainly by engine/vehicle size (<code>weight</code>, <code>displacement</code>, <code>horsepower</code>, <code>cylinders</code>), which are themselves highly collinear — a key consideration for any regression model built from this data.</p>
+
+  </main>
+</div>
+
+<footer class="site">
+  <div class="inner">
+    <span>&copy; 2026 Damiano Tartarini</span>
+    <span><a href="https://github.com/">GitHub</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
